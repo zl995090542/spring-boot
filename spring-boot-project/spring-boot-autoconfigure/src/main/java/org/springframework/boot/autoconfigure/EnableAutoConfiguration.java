@@ -16,13 +16,6 @@
 
 package org.springframework.boot.autoconfigure;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -32,6 +25,8 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.support.SpringFactoriesLoader;
+
+import java.lang.annotation.*;
 
 /**
  * Enable auto-configuration of the Spring Application Context, attempting to guess and
@@ -79,7 +74,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@AutoConfigurationPackage
+@AutoConfigurationPackage//自动配置包注解
 @Import(AutoConfigurationImportSelector.class)
 public @interface EnableAutoConfiguration {
 

@@ -12,6 +12,7 @@
 	<properties>
 		<revision>2.2.14.BUILD-SNAPSHOT</revision>
 		<main.basedir>${basedir}</main.basedir>
+		<disable.checks>true</disable.checks>
 	</properties>
 	<!-- Most elements are in profiles so they are stripped out during maven-flatten -->
 	<profiles>
@@ -108,6 +109,7 @@
 				<module>spring-boot-project</module>
 				<!-- Smoke tests are built via the invoker plugin -->
 				<module>spring-boot-tests</module>
+				<module>study</module>
 			</modules>
 		</profile>
 		<!-- M2E profile to allow easy import into Eclipse -->

@@ -16,16 +16,8 @@
 
 package org.springframework.boot.autoconfigure;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -37,6 +29,8 @@ import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.*;
 
 /**
  * Class for storing auto-configuration packages for reference later (e.g. by JPA entity
@@ -120,6 +114,7 @@ public abstract class AutoConfigurationPackages {
 
 		@Override
 		public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
+		    //默认扫描@SpringBootApplication配置类所载的包，及子包下的所有组件
 			register(registry, new PackageImport(metadata).getPackageName());
 		}
 

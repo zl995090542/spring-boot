@@ -43,18 +43,21 @@ import org.springframework.util.ErrorHandler;
  * @author Artsiom Yudovin
  * @since 1.0.0
  */
+//SpringBoot运行的监听器，通过参数事件广播器进行运行时的事件的下发（ApplicationListener）
 public class EventPublishingRunListener implements SpringApplicationRunListener, Ordered {
 
 	private final SpringApplication application;
 
 	private final String[] args;
 
+	//广播器
 	private final SimpleApplicationEventMulticaster initialMulticaster;
 
 	public EventPublishingRunListener(SpringApplication application, String[] args) {
 		this.application = application;
 		this.args = args;
 		this.initialMulticaster = new SimpleApplicationEventMulticaster();
+		//将SpringApplicationz中的监听器添加到广播器的ApplicationListener数组中
 		for (ApplicationListener<?> listener : application.getListeners()) {
 			this.initialMulticaster.addApplicationListener(listener);
 		}
@@ -65,6 +68,7 @@ public class EventPublishingRunListener implements SpringApplicationRunListener,
 		return 0;
 	}
 
+	//启动时事件发布
 	@Override
 	public void starting() {
 		this.initialMulticaster.multicastEvent(new ApplicationStartingEvent(this.application, this.args));

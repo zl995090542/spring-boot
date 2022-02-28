@@ -16,12 +16,7 @@
 
 package org.springframework.boot;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-
 import groovy.lang.Closure;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.groovy.GroovyBeanDefinitionReader;
@@ -45,6 +40,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Loads bean definitions from underlying sources, including XML and JavaConfig. Acts as a
@@ -153,7 +152,9 @@ class BeanDefinitionLoader {
 			GroovyBeanDefinitionSource loader = BeanUtils.instantiateClass(source, GroovyBeanDefinitionSource.class);
 			load(loader);
 		}
+		//启动类是否包含@Component注解
 		if (isComponent(source)) {
+		    //以注解的方式将启动类等，的信息存入benDefinitionMap
 			this.annotatedReader.register(source);
 			return 1;
 		}
