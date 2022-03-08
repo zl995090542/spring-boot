@@ -1,4 +1,4 @@
-package com.zenglong;
+package org.springframework.boot;
 
 import static org.junit.Assert.assertTrue;
 

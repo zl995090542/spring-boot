@@ -1,4 +1,4 @@
-package com.zenglong;
+package com.study;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Hello world!
  *
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages="com.study")
 public class App 
 {
     public static void main( String[] args )

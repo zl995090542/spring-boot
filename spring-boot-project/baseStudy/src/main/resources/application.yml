@@ -1,0 +1,10 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /boot
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: ccsu_zenglong
+    url: jdbc:mysql://106.52.134.16:3306/oaboot?connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
