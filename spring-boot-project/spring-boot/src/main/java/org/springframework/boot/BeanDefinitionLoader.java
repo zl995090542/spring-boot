@@ -123,6 +123,7 @@ class BeanDefinitionLoader {
 	 */
 	int load() {
 		int count = 0;
+		//sources 就是SpringApplication传入的启动类
 		for (Object source : this.sources) {
 			count += load(source);
 		}
