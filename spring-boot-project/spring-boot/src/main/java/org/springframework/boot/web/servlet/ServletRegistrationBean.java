@@ -175,6 +175,7 @@ public class ServletRegistrationBean<T extends Servlet> extends DynamicRegistrat
 	@Override
 	protected ServletRegistration.Dynamic addRegistration(String description, ServletContext servletContext) {
 		String name = getServletName();
+		//注册servlet
 		return servletContext.addServlet(name, this.servlet);
 	}
 

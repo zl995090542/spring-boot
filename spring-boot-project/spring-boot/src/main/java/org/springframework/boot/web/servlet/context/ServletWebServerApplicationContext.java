@@ -163,6 +163,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		ServletContext servletContext = getServletContext();
 		if (webServer == null && servletContext == null) {
 			ServletWebServerFactory factory = getWebServerFactory();
+			//通过webserver工厂，传入我们所有实现ServletContextInitializer(用于注册servlet)此接口的实例
 			this.webServer = factory.getWebServer(getSelfInitializer());
 		}
 		else if (servletContext != null) {
@@ -211,7 +212,9 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		prepareWebApplicationContext(servletContext);
 		registerApplicationScope(servletContext);
 		WebApplicationContextUtils.registerEnvironmentBeans(getBeanFactory(), servletContext);
+		//这里是所有的servletContextInitializer实现类，会获取所有的注册组件
 		for (ServletContextInitializer beans : getServletContextInitializerBeans()) {
+			//调用onStartup方法以注册所有的servlet
 			beans.onStartup(servletContext);
 		}
 	}

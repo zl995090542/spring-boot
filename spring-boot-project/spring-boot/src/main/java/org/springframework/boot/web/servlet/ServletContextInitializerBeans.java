@@ -74,6 +74,7 @@ public class ServletContextInitializerBeans extends AbstractCollection<ServletCo
 
 	private final List<Class<? extends ServletContextInitializer>> initializerTypes;
 
+	//beanFactory中所有的ServletContextInitializer类型的Bean
 	private List<ServletContextInitializer> sortedList;
 
 	@SafeVarargs
@@ -82,17 +83,21 @@ public class ServletContextInitializerBeans extends AbstractCollection<ServletCo
 		this.initializers = new LinkedMultiValueMap<>();
 		this.initializerTypes = (initializerTypes.length != 0) ? Arrays.asList(initializerTypes)
 				: Collections.singletonList(ServletContextInitializer.class);
+		//扫描工厂中对应的ServletContextInitializer bean，并将它放入 initializers 变量中
 		addServletContextInitializerBeans(beanFactory);
 		addAdaptableBeans(beanFactory);
+		//将列表进行排序
 		List<ServletContextInitializer> sortedInitializers = this.initializers.values().stream()
 				.flatMap((value) -> value.stream().sorted(AnnotationAwareOrderComparator.INSTANCE))
 				.collect(Collectors.toList());
+		//使用一个不能被修改的list包装，避免中途被人修改
 		this.sortedList = Collections.unmodifiableList(sortedInitializers);
 		logMappings(this.initializers);
 	}
 
 	private void addServletContextInitializerBeans(ListableBeanFactory beanFactory) {
 		for (Class<? extends ServletContextInitializer> initializerType : this.initializerTypes) {
+			//获取所有 ServletContextInitializer 类型的bean,并将它添加到 全局变量 initializers 中
 			for (Entry<String, ? extends ServletContextInitializer> initializerBean : getOrderedBeansOfType(beanFactory,
 					initializerType)) {
 				addServletContextInitializerBean(initializerBean.getKey(), initializerBean.getValue(), beanFactory);
@@ -235,6 +240,12 @@ public class ServletContextInitializerBeans extends AbstractCollection<ServletCo
 		logger.debug("Mapping " + name + ": " + info);
 	}
 
+	/**
+	 * 为什么需要这个方法？
+	 * 	因为在ServletWebServerApplicationContext的selfInitialize方法中要对这个类进行遍历，并调用其中的onStartup方法完成servlet的注入，
+	 * 	此处覆盖这个方法就是替换遍历时返回的元素
+	 * @return
+	 */
 	@Override
 	public Iterator<ServletContextInitializer> iterator() {
 		return this.sortedList.iterator();
