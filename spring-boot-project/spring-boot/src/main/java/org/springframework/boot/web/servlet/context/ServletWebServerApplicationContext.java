@@ -167,6 +167,8 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 			this.webServer = factory.getWebServer(getSelfInitializer());
 		}
 		else if (servletContext != null) {
+			//走进此分支，则表示是通过SpringBoot war包的方式启动，
+			//此时需要完成对 ServletContextInitializer 的调用，以完成Servlet的注入，或者一些参数的配置
 			try {
 				getSelfInitializer().onStartup(servletContext);
 			}
@@ -205,10 +207,18 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	 * @see #prepareWebApplicationContext(ServletContext)
 	 */
 	private org.springframework.boot.web.servlet.ServletContextInitializer getSelfInitializer() {
+		//这里返回的是一个匿名内部类，因为ServletContextInitializer是一个函数式接口，所以这里相当于
+//		new ServletContextInitializer(){
+//			@Override
+//			public void onStartup(ServletContext servletContext) throws ServletException {
+//				selfInitialize(servletContext);
+//			}
+//		};
 		return this::selfInitialize;
 	}
 
 	private void selfInitialize(ServletContext servletContext) throws ServletException {
+		//准备web应用上下文，完成ServletContext和 ApplicationContext的双向绑定
 		prepareWebApplicationContext(servletContext);
 		registerApplicationScope(servletContext);
 		WebApplicationContextUtils.registerEnvironmentBeans(getBeanFactory(), servletContext);
@@ -262,11 +272,13 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		}
 		servletContext.log("Initializing Spring embedded WebApplicationContext");
 		try {
+			//完成ServletContext -> ApplicationContext
 			servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this);
 			if (logger.isDebugEnabled()) {
 				logger.debug("Published root WebApplicationContext as ServletContext attribute with name ["
 						+ WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE + "]");
 			}
+			//完成 ApplicationContext -> ServletContext
 			setServletContext(servletContext);
 			if (logger.isInfoEnabled()) {
 				long elapsedTime = System.currentTimeMillis() - getStartupDate();

@@ -114,6 +114,7 @@ public abstract class SpringBootServletInitializer implements WebApplicationInit
 			servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, null);
 			builder.initializers(new ParentContextApplicationContextInitializer(parent));
 		}
+		//增加一个ApplicationContextInitializer 接口实现，用于ApplicationContext -> ServletContext的绑定
 		builder.initializers(new ServletContextApplicationContextInitializer(servletContext));
 		builder.contextClass(AnnotationConfigServletWebServerApplicationContext.class);
 		builder = configure(builder);
