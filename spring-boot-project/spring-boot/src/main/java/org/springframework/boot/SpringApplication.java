@@ -394,6 +394,8 @@ public class SpringApplication {
 	private void refreshContext(ConfigurableApplicationContext context) {
 		if (this.registerShutdownHook) {
 			try {
+				//注册context 的hook函数，用于程序停止时进行必要的资源释放和事件通知、服务下线等操作
+				// AbstractApplicationContext#registerShutdownHook
 				context.registerShutdownHook();
 			}
 			catch (AccessControlException ex) {
